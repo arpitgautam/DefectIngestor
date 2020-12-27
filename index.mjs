@@ -8,6 +8,7 @@ import Constansts from './constants.mjs'
     if(process.argv.length >2 && process.argv[2] === '-devmode'){
         Constansts.DEVMODE = true;
     }
+    
     console.log('devmode:' + Constansts.DEVMODE);
     let controller = new Controller;
     await controller.run();

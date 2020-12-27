@@ -22,7 +22,9 @@ class VulnerabilitiesDataStore{
 
     filter(fn){
         this._container.filter(fn);
-
+    }
+    forEach(fn){
+        this._container.forEach(fn);
     }
 }
 
@@ -43,7 +45,7 @@ class DataItem{
     }
 
     get description(){
-        this._desc;
+        return this._desc;
     }
 
     set description(d){
