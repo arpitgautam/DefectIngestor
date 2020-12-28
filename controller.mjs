@@ -2,13 +2,14 @@ import RSSManager from './rssmanager.mjs';
 import enums from './enums.mjs';
 import Logger from './logger.mjs';
 import RSSParser from './rssparser.mjs';
-import DBManager from './dbmanager.mjs';
 import Constants from './constants.mjs';
+import Database from './database.mjs';
 
 class Controller {
 
     async run() {
         let logger = new Logger();
+        let db;
         try {
             logger.log('Starting to get RSS feed');
             let rssManager = new RSSManager();
@@ -17,16 +18,22 @@ class Controller {
             logger.log('RSS feed done');
             let dataObject = rssParser.parse(rssData);
             logger.log('RSS feed parsed');
-            //saving to aws dynamodb
-            let dbUrl = undefined;
-            let region = 'ap-south-1';
-            if(Constants.DEVMODE === true){
-                dbUrl = 'http://localhost:8000';
-                region = 'local';
+            //saving to mongo
+            db = new Database('mongodb://localhost:27017/');
+            await db.init();
+            let staleEntryFound = await db.updateNonStaleStatus(dataObject);
+            if (!staleEntryFound) {
+                //remove all records from collection and insert new ones
+                await db.removeAllDefects();
+                await db.insertDefects(dataObject);
+
             }
-            let dbmanager = new DBManager(region, dbUrl);
-            const results = await dbmanager.putItems(dataObject);
+            await db.close();
+
         } catch (err) {
+            if (db) {
+                await db.close();
+            }
             logger.log(err);
         }
     }

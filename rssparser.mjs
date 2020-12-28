@@ -29,6 +29,7 @@ class RSSParser {
         if (currentItems && currentItems.length > 1) {
             let currentItem = currentItems[0];//taking first item only as just the latest week needed
             this._logger.log(currentItem.title);
+            this._data.title = currentItem.title;
             this._title = currentItem.title;
             return currentItem.description;
         } else {

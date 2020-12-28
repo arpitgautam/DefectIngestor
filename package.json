@@ -4,7 +4,7 @@
   "description": "vda",
   "main": "index.js",
   "scripts": {
-    "test": "node index.mjs"
+    "test": "node index.mjs -devmode"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -13,6 +13,7 @@
     "axios": "^0.21.0",
     "fast-xml-parser": "^3.17.5",
     "html-entities": "^1.4.0",
+    "mongodb": "^3.6.3",
     "node-html-parser": "^2.0.0"
   }
 }

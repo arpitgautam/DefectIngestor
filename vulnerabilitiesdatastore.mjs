@@ -7,9 +7,22 @@ class VulnerabilitiesDataStore{
 
     constructor(){
         this._container = new Array();
+        this._title = '';
 
     }
 
+    get title(){
+        return this._title;
+    }
+
+    set title(t){
+        this._title = t;
+    }
+
+    get container(){
+        return this._container;
+    }
+    
     add(product, desc,cvss,number)
     {
         let dataItem = new DataItem(product,desc,cvss,number);
@@ -66,6 +79,15 @@ class DataItem{
 
     set number(n){
         this._number = n;
+    }
+
+    adaptForDB(){
+        return {
+            'Cvss': this._cvss,
+            'Description': this._desc,
+            'Number': this._number,
+            'Product': this._product
+        };
     }
 
 }
