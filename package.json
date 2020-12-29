@@ -4,7 +4,7 @@
   "description": "vda",
   "main": "index.js",
   "scripts": {
-    "test": "node index.mjs -devmode"
+    "test": "node index.js -devmode"
   },
   "author": "",
   "license": "Apache-2.0",

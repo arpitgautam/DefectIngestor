@@ -18,9 +18,9 @@ class Controller {
             logger.log('RSS feed done');
             let dataObject = rssParser.parse(rssData);
             logger.log('RSS feed parsed');
-            logger.log(dataObject);
             //saving to mongo
-            /*db = new Database('mongodb://localhost:27017/');
+            const mongoURL = process.env.MONGO_URL;
+            db = new Database(mongoURL);
             await db.init();
             let staleEntryFound = await db.updateNonStaleStatus(dataObject);
             if (!staleEntryFound) {
@@ -29,7 +29,7 @@ class Controller {
                 await db.insertDefects(dataObject);
 
             }
-            await db.close();*/
+            await db.close();
 
         } catch (err) {
             if (db) {
