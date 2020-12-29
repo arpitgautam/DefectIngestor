@@ -9,4 +9,4 @@ class Constants{
 
 let constants = new Constants();
 
-export default constants;
+module.exports = constants;

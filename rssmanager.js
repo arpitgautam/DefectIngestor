@@ -1,9 +1,9 @@
-import fs from 'fs'
-import axios from 'axios';
+const fs = require('fs')
+const axios = require('axios');
 
-import Logger from './logger.mjs';
-import constants from './constants.mjs';
-import Enums from './enums.mjs';
+const Logger = require('./logger.js');
+const constants = require('./constants.js');
+const Enums = require('./enums.js');
 
 class RSSManager {
 
@@ -48,4 +48,4 @@ class RSSManager {
     }
 }
 
-export default RSSManager;
+module.exports = RSSManager;

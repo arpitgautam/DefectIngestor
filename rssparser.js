@@ -1,10 +1,10 @@
 
-import xmlParser from 'fast-xml-parser';
-import Entities from 'html-entities';
-import htmlParser from 'node-html-parser';
+const xmlParser = require('fast-xml-parser');
+const Entities = require('html-entities');
+const htmlParser = require('node-html-parser');
 
-import Logger from './logger.mjs';
-import VulnerabilitiesDataStore from './vulnerabilitiesdatastore.mjs';
+const Logger = require('./logger.js');
+const VulnerabilitiesDataStore = require('./vulnerabilitiesdatastore.js');
 
 
 class RSSParser {
@@ -78,4 +78,4 @@ class RSSParser {
 
 }
 
-export default RSSParser;
+module.exports = RSSParser;

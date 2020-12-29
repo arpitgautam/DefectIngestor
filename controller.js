@@ -1,9 +1,9 @@
-import RSSManager from './rssmanager.mjs';
-import enums from './enums.mjs';
-import Logger from './logger.mjs';
-import RSSParser from './rssparser.mjs';
-import Constants from './constants.mjs';
-import Database from './database.mjs';
+const RSSManager = require('./rssmanager.js');
+const Enums = require('./enums.js');
+const Logger = require('./logger.js');
+const RSSParser = require('./rssparser.js');
+const Constants = require('./constants.js');
+const Database = require('./database.js');
 
 class Controller {
 
@@ -14,12 +14,13 @@ class Controller {
             logger.log('Starting to get RSS feed');
             let rssManager = new RSSManager();
             let rssParser = new RSSParser();
-            let rssData = await rssManager.fetch(enums.RSSSource.LOCAL);
+            let rssData = await rssManager.fetch(Enums.RSSSource.LOCAL);
             logger.log('RSS feed done');
             let dataObject = rssParser.parse(rssData);
             logger.log('RSS feed parsed');
+            logger.log(dataObject);
             //saving to mongo
-            db = new Database('mongodb://localhost:27017/');
+            /*db = new Database('mongodb://localhost:27017/');
             await db.init();
             let staleEntryFound = await db.updateNonStaleStatus(dataObject);
             if (!staleEntryFound) {
@@ -28,7 +29,7 @@ class Controller {
                 await db.insertDefects(dataObject);
 
             }
-            await db.close();
+            await db.close();*/
 
         } catch (err) {
             if (db) {
@@ -39,4 +40,4 @@ class Controller {
     }
 }
 
-export default Controller;
+module.exports = Controller;

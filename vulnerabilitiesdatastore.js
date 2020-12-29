@@ -92,4 +92,4 @@ class DataItem{
 
 }
 
-export default VulnerabilitiesDataStore;
+module.exports =  VulnerabilitiesDataStore;

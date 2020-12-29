@@ -1,6 +1,6 @@
-import MongoClient from 'mongodb';
+const MongoClient = require('mongodb');
 
-import Logger from './logger.mjs';
+const Logger = require('./logger.js');
 
 class Database {
 
@@ -79,4 +79,4 @@ class Database {
 
 }
 
-export default Database;
+module.exports = Database;
