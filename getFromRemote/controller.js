@@ -32,10 +32,11 @@ class Controller {
             await db.close();
 
         } catch (err) {
+            logger.log(err);
             if (db) {
                 await db.close();
             }
-            logger.log(err);
+           
         }
     }
 }

@@ -13,11 +13,9 @@ class Database {
 
     async init() {
         this._connection = await MongoClient.connect(this._url);
-        if (!this._connection) {
-            throw new Error('unable to connect to database');
-        } else {
-            this._db = this._connection.db('scalert');
-        }
+
+        this._db = this._connection.db('scalert');
+
         this._status = this._db.collection('Status');
         this._defects = this._db.collection('Defects');
     }
@@ -31,7 +29,7 @@ class Database {
     //in case of same data, it is staled
     async updateNonStaleStatus(data) {
         let query = { Id: '1' };
-        let staleEntryFound = false; 
+        let staleEntryFound = false;
         let result = await this._status.find(query).toArray();
         if (result.length === 0) {
             let recordObj = {
@@ -54,19 +52,19 @@ class Database {
         return staleEntryFound;
     }
 
-    async removeAllDefects(){
+    async removeAllDefects() {
         this._logger.log('removing all defects');
         this._defects.deleteMany({});
     }
 
-    async insertDefects(defects){
-        let dbObjects = defects.container.map((defect)=>{
+    async insertDefects(defects) {
+        let dbObjects = defects.container.map((defect) => {
             return defect.adaptForDB();
         });
         await this._defects.insertMany(dbObjects);
         console.log('defects inserted');
     }
-    
+
 
     async _updateRecord(query, update) {
         let updateObj = {

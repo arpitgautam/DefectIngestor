@@ -1,4 +1,3 @@
-cd DefectIngestor
-jar cvf out.zip *
-cd ..
-Move DefectIngestor\out.zip .
+cd DefectIngestor/getFromRemote
+WinRAR a -r ../../getFromRemote.zip *
+cd ../..
