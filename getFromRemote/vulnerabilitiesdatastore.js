@@ -47,6 +47,7 @@ class DataItem{
         this._desc = d;
         this._cvss = c;
         this._number = n;
+        this._processed = false;
     }
 
     get product(){
@@ -86,7 +87,8 @@ class DataItem{
             'Cvss': this._cvss,
             'Description': this._desc,
             'Number': this._number,
-            'Product': this._product
+            'Product': this._product,
+            'Processed': this._processed
         };
     }
 

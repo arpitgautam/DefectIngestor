@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb');
 
 const Logger = require('./logger.js');
+const Constants = require('./constants.js');
 
 class Database {
 
@@ -8,6 +9,7 @@ class Database {
 
         this._url = url;
         this._logger = new Logger();
+        this._locked = false;
 
     }
 
@@ -34,15 +36,22 @@ class Database {
         if (result.length === 0) {
             let recordObj = {
                 Id: '1',
-                Title: data.title
+                Title: data.title,
+                locked: Constants.LOCK
             };
             await this._status.insertOne(recordObj);
             this._logger.log('status not found, inserting');
             //compare the one passed in with the one in the db
         } else if (result[0].Title !== data.title) {
 
-            await this._updateRecord({ Id: '1' }, { "Title": data.title })
-            this._logger.log('status updating');
+            if (!this.isStatusLocked(result[0])) {
+                await this._updateRecord({ Id: '1' }, { "Title": data.title, locked: Constants.LOCK })
+                this._locked = true;
+                this._logger.log('status locked');
+            } else {
+                staleEntryFound = true;
+                this._logger.log('already locked. Cant proceed');
+            }
 
         } else {
             staleEntryFound = true;
@@ -51,6 +60,19 @@ class Database {
 
         return staleEntryFound;
     }
+
+    isStatusLocked(statusRecord) {
+        return (statusRecord.locked && statusRecord.locked !== Constants.LOCK)
+
+    }
+    async lockStatus(lock) {
+        if (this._locked) {
+            await this._updateRecord({ Id: '1' }, { locked: '' });
+            this._logger.log('status unlocked');
+        }
+
+    }
+
 
     async removeAllDefects() {
         this._logger.log('removing all defects');

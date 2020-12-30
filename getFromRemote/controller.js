@@ -27,7 +27,7 @@ class Controller {
                 //remove all records from collection and insert new ones
                 await db.removeAllDefects();
                 await db.insertDefects(dataObject);
-
+                await db.lockStatus(false);
             }
             await db.close();
 
