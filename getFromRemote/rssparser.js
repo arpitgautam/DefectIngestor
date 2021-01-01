@@ -3,7 +3,7 @@ const xmlParser = require('fast-xml-parser');
 const Entities = require('html-entities');
 const htmlParser = require('node-html-parser');
 
-const Logger = require('./logger.js');
+const Logger = require('../common/logger');
 const VulnerabilitiesDataStore = require('./vulnerabilitiesdatastore.js');
 
 

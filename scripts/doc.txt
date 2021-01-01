@@ -1,0 +1,4 @@
+mongo has defects collection for putting defects in
+it has status collection to sync various lambdas
+it has user collection to have user email and list of libraries
+it also has library collection to have library and list of users

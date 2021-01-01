@@ -1,9 +1,9 @@
 const fs = require('fs')
 const axios = require('axios');
 
-const Logger = require('./logger.js');
-const constants = require('./constants.js');
-const Enums = require('./enums.js');
+const Logger = require('../common/logger');
+const constants = require('../common/constants');
+const Enums = require('../common/enums');
 
 class RSSManager {
 
@@ -14,8 +14,6 @@ class RSSManager {
         this.file = fs.promises;
     }
 
-    //fetch should happen at the begining of each week,it must be controlled by a controller
-    //fetch will
     async fetch(getFromRemote) {
         if (getFromRemote === Enums.RSSSource.REMOTE) {
             return await this._fetchFromRemote();

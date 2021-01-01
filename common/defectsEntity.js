@@ -1,9 +1,10 @@
 const MongoClient = require('mongodb');
 
-const Logger = require('./logger.js');
-const Constants = require('./constants.js');
+const Logger = require('./logger');
+const Constants = require('./constants');
+const DBOperations = require('./dbOperations');
 
-class Database {
+class DefectsEntity {
 
     constructor(url) {
 
@@ -26,12 +27,10 @@ class Database {
         await this._connection.close();
     }
 
-    //checks status collection to see if there is a record in there
-    //if there is a record in there, it is compared with data passed in
-    //in case of same data, it is staled
-    async updateNonStaleStatus(data) {
+    //updates status for this table. ought to be moved to a central npm
+    async updateStatus(data) {
         let query = { Id: '1' };
-        let staleEntryFound = false;
+        let canproceed = false;
         let result = await this._status.find(query).toArray();
         if (result.length === 0) {
             let recordObj = {
@@ -45,20 +44,20 @@ class Database {
         } else if (result[0].Title !== data.title) {
 
             if (!this.isStatusLocked(result[0])) {
-                await this._updateRecord({ Id: '1' }, { "Title": data.title, locked: Constants.LOCK })
+                await DBOperations.updateRecord({ Id: '1' }, { "Title": data.title, locked: Constants.LOCK },this._status)
                 this._locked = true;
                 this._logger.log('status locked');
             } else {
-                staleEntryFound = true;
+                canproceed = true;
                 this._logger.log('already locked. Cant proceed');
             }
 
         } else {
-            staleEntryFound = true;
+            canproceed = true;
             this._logger.log('stale entry found');
         }
 
-        return staleEntryFound;
+        return canproceed;
     }
 
     isStatusLocked(statusRecord) {
@@ -67,7 +66,7 @@ class Database {
     }
     async lockStatus(lock) {
         if (this._locked) {
-            await this._updateRecord({ Id: '1' }, { locked: '' });
+            await DBOperations.updateRecord({ Id: '1' }, { locked: '' },this._status);
             this._logger.log('status unlocked');
         }
 
@@ -87,16 +86,6 @@ class Database {
         console.log('defects inserted');
     }
 
-
-    async _updateRecord(query, update) {
-        let updateObj = {
-            $set: update,
-            $currentDate: { lastModified: true }
-        }
-        await this._status.updateOne(query, updateObj);
-    }
-
-
 }
 
-module.exports = Database;
+module.exports = DefectsEntity;

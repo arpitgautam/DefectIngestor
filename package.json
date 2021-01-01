@@ -4,7 +4,8 @@
   "description": "vda",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js -devmode"
+    "get": "node getFromRemote/index.js -devmode",
+    "users": "node users/index.js -devmode"
   },
   "author": "",
   "license": "Apache-2.0",

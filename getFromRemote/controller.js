@@ -1,9 +1,9 @@
-const RSSManager = require('./rssmanager.js');
-const Enums = require('./enums.js');
-const Logger = require('./logger.js');
-const RSSParser = require('./rssparser.js');
-const Constants = require('./constants.js');
-const Database = require('./database.js');
+const RSSManager = require('./rssmanager');
+const Enums = require('../common/enums');
+const Logger = require('../common/logger');
+const RSSParser = require('./rssparser');
+const Constants = require('../common/constants');
+const DefectsEntity = require('../common/defectsEntity');
 
 class Controller {
 
@@ -20,10 +20,10 @@ class Controller {
             logger.log('RSS feed parsed');
             //saving to mongo
             const mongoURL = process.env.MONGO_URL;
-            db = new Database(mongoURL);
+            db = new DefectsEntity(mongoURL);
             await db.init();
-            let staleEntryFound = await db.updateNonStaleStatus(dataObject);
-            if (!staleEntryFound) {
+            let canproceed = await db.updateStatus(dataObject);
+            if (!canproceed) {
                 //remove all records from collection and insert new ones
                 await db.removeAllDefects();
                 await db.insertDefects(dataObject);
