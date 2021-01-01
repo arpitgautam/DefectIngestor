@@ -1,30 +1,18 @@
-const MongoClient = require('mongodb');
-
-const Logger = require('./logger');
 const Constants = require('./constants');
-const DBOperations = require('./dbOperations');
+const BaseEntity = require('./baseEntity');
 
-class DefectsEntity {
+class DefectsEntity extends BaseEntity{
 
     constructor(url) {
-
-        this._url = url;
-        this._logger = new Logger();
+        super(url);
         this._locked = false;
 
     }
 
     async init() {
-        this._connection = await MongoClient.connect(this._url);
-
-        this._db = this._connection.db('scalert');
-
+        await super.init();
         this._status = this._db.collection('Status');
         this._defects = this._db.collection('Defects');
-    }
-
-    async close() {
-        await this._connection.close();
     }
 
     //updates status for this table. ought to be moved to a central npm
@@ -44,7 +32,7 @@ class DefectsEntity {
         } else if (result[0].Title !== data.title) {
 
             if (!this.isStatusLocked(result[0])) {
-                await DBOperations.updateRecord({ Id: '1' }, { "Title": data.title, locked: Constants.LOCK },this._status)
+                await BaseEntity.updateRecord({ Id: '1' }, { locked: Constants.LOCK },this._status)
                 this._locked = true;
                 this._logger.log('status locked');
             } else {
@@ -64,9 +52,10 @@ class DefectsEntity {
         return (statusRecord.locked && statusRecord.locked !== Constants.LOCK)
 
     }
-    async lockStatus(lock) {
+    //used to lock as well unlock. for now, being used for unlock only
+    async lockStatus(lock,data) {
         if (this._locked) {
-            await DBOperations.updateRecord({ Id: '1' }, { locked: '' },this._status);
+            await BaseEntity.updateRecord({ Id: '1' }, {"Title": data.title, locked: '' },this._status);
             this._logger.log('status unlocked');
         }
 

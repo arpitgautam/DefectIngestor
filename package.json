@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "get": "node getFromRemote/index.js -devmode",
-    "users": "node users/index.js -devmode"
-  },
+    "users": "node users/index.js -devmode",
+    "test" : "node users/index.js -devmode"
+    },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
