@@ -22,6 +22,7 @@ class Controller {
             const mongoURL = process.env.MONGO_URL;
             db = new DefectsEntity(mongoURL);
             await db.init();
+            //start transcation here or inside the entity
             let canproceed = await db.updateStatus(dataObject);
             if (!canproceed) {
                 //remove all records from collection and insert new ones
@@ -29,6 +30,7 @@ class Controller {
                 await db.insertDefects(dataObject);
                 await db.lockStatus(false,dataObject);
             }
+            //end trascation here
             await db.close();
 
         } catch (err) {
