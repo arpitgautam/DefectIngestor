@@ -3,7 +3,7 @@ class Constants{
         this.RSS_FILE_NAME = 'latest_rss.txt';
         this.META_FILE_NAME='metadata/libraries.txt';
         this.DEVMODE = false;
-        this.LOCK = 'getFromRemote';
+        this.REMOTELOCK = 'getFromRemote';
     }
 
 }

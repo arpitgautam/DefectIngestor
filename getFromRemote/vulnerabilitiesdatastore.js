@@ -87,8 +87,7 @@ class DataItem{
             'Cvss': this._cvss,
             'Description': this._desc,
             'Number': this._number,
-            'Product': this._product,
-            'Processed': this._processed
+            'Product': this._product
         };
     }
 

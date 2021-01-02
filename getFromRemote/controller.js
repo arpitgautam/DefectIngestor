@@ -9,7 +9,7 @@ class Controller {
 
     async run() {
         let logger = new Logger();
-        let db;
+        let db,locked=false;
         try {
             logger.log('Starting to get RSS feed');
             let rssManager = new RSSManager();
@@ -23,21 +23,25 @@ class Controller {
             db = new DefectsEntity(mongoURL);
             await db.init();
             //start transcation here or inside the entity
-            let canproceed = await db.updateStatus(dataObject);
-            if (!canproceed) {
+            locked = await db.markStatusLocked(dataObject);
+            if (locked) {
                 //remove all records from collection and insert new ones
                 await db.removeAllDefects();
                 await db.insertDefects(dataObject);
-                await db.lockStatus(false,dataObject);
+                await db.unlockStatus(dataObject);
             }
             //end trascation here
             await db.close();
 
         } catch (err) {
             logger.log(err);
+            if(locked && db){
+                await db.unlockStatus(dataObject);
+            }
             if (db) {
                 await db.close();
             }
+
            
         }
     }
