@@ -23,7 +23,7 @@ class Controller {
             db = new DefectsEntity(mongoURL);
             await db.init();
             //start transcation here or inside the entity
-            locked = await db.markStatusLocked(dataObject);
+            locked = await db.markStatusLocked(dataObject,Constants.REMOTELOCK);
             if (locked) {
                 //remove all records from collection and insert new ones
                 await db.removeAllDefects();

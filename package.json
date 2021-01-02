@@ -6,6 +6,7 @@
   "scripts": {
     "get": "node getFromRemote/index.js -devmode",
     "users": "node users/index.js -devmode",
+    "check": "node check/index.js -devmode",
     "test" : "node users/index.js -devmode"
     },
   "author": "",

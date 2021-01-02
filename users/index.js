@@ -16,17 +16,17 @@ let handler = async function (event, context) {
     let dummyData = [
         {
             Email: "arpit@abc.com",
-            Libraries: ["Corretto", "JBoss"],
+            Libraries: ["Corretto", "JBoss","struts","gitlab","wireshark"],
 
         },
         {
             Email: "albert@abc.com",
-            Libraries: ["Corretto", "JBoss", "nginix"],
+            Libraries: ["Corretto", "JBoss", "nginix","vscode","mongo","gitlab"],
 
         },
         {
             Email: "pinto@abc.com",
-            Libraries: ["OpenFire", "Node"],
+            Libraries: ["OpenFire", "Node","struts","httpclient","log4j", "log4j2","wireshark"],
 
         }
     ];

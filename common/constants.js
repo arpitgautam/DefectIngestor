@@ -4,6 +4,7 @@ class Constants{
         this.META_FILE_NAME='metadata/libraries.txt';
         this.DEVMODE = false;
         this.REMOTELOCK = 'getFromRemote';
+        this.CHECKLOCK = 'checkLock';
     }
 
 }
